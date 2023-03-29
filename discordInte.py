@@ -6,7 +6,7 @@ from discord.ext import commands
 load_dotenv()#loads files from a .dotenv
 
 # the 'main' function of the discord integration stuff. executes all the discord functionality
-def startDiscordInte():
+def startBot():
     TOKEN = os.getenv("DISCORD_TOKEN")
     intents = discord.Intents.default()
     intents.members = True
@@ -14,4 +14,6 @@ def startDiscordInte():
 
     @client.event
     async def on_ready():
-        print("we are logged in")
+        print(f"{client.user} is now running!")
+    
+    client.run(TOKEN)

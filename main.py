@@ -5,4 +5,4 @@ import requests
 
 if __name__ == '__main__':
 
-    di.startDiscordInte();
+    di.startBot()
