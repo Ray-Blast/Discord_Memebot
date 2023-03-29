@@ -18,23 +18,33 @@ def startBot():
 
     bot = commands.Bot(command_prefix='?', description = description, intents = intents)
 
-    @bot.event
+    @bot.event 
     async def on_ready():
+        '''Startup event, says that the bot is now running'''
         print(f"{bot.user} is now running!")
     
     @bot.command()
     async def ping(ctx):
+        '''Checks the latency of the bot, creates it within an embed'''
         embedVar = discord.Embed(title="Pong", description="Pong", color=0x00ff00)
         embedVar.add_field(name="Latency", value=str(round(bot.latency * 1000)), inline=False)
         await ctx.send(embed=embedVar)
 
-    @bot.command
+    @bot.command()
     async def test(ctx, arg):
+        '''Test command, repeats what you said. Use Quotes for literals'''
         await ctx.send(arg)
 
     @bot.command()
     async def joined(ctx, member: discord.Member):
-        """Says when a member joined."""
+        """Says when the member joined, and some more info"""
         await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
+    
+    @joined.error
+    async def joined_error(ctx, error):
+        '''Relays bad argument error'''
+        if isinstance(error, commands.BadArgument):
+            await ctx.send("Please tag a member! [prefix]joined @(member)")
+            
     
     bot.run(TOKEN)
