@@ -8,16 +8,21 @@ load_dotenv()#loads files from a .dotenv
 # the 'main' function of the discord integration stuff. executes all the discord functionality
 def startBot():
     
+    # Gets token from .env file in the project
     TOKEN = os.getenv("DISCORD_TOKEN")
-    description = '''This bot got memes'''
+    description = '''This bot got memes'''# writes description for the bot
 
+    # intents setup
     intents = discord.Intents.default()
     intents.members = True
     intents.message_content = True
     intents.guilds = True
 
+    #sets up the commands
     bot = commands.Bot(command_prefix='?', description = description, intents = intents)
 
+    #Events and Commands Below
+    # ------------------------------------
     @bot.event 
     async def on_ready():
         '''Startup event, says that the bot is now running'''
@@ -34,12 +39,18 @@ def startBot():
     async def test(ctx, arg):
         '''Test command, repeats what you said. Use Quotes for literals'''
         await ctx.send(arg)
-
+    
+    @bot.command()
+    async def add(ctx, left: int, right: int):
+        """Adds two numbers together."""
+        await ctx.send(left + right)
+    
     @bot.command()
     async def joined(ctx, member: discord.Member):
         """Says when the member joined, and some more info"""
         await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
     
+    #checks for bad arguments
     @joined.error
     async def joined_error(ctx, error):
         '''Relays bad argument error'''

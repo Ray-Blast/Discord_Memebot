@@ -1,5 +1,4 @@
 import discordInte as di
-import requests
 
 
 
