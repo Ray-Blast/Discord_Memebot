@@ -19,7 +19,7 @@ def startBot():
     intents.guilds = True
 
     #sets up the commands
-    bot = commands.Bot(command_prefix='?', description = description, intents = intents)
+    bot = commands.Bot(command_prefix=commands.when_mentioned_or('?'), description = description, intents = intents)
 
     #Events and Commands Below
     # ------------------------------------
