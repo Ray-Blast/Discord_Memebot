@@ -1,5 +1,6 @@
-import discord
+'''This module handles all the discord integration side of the bot'''
 import os
+import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -7,9 +8,9 @@ load_dotenv()#loads files from a .dotenv
 
 # the 'main' function of the discord integration stuff. executes all the discord functionality
 def startBot():
-    
+    '''Function that begins the bot startup'''
     # Gets token from .env file in the project
-    TOKEN = os.getenv("DISCORD_TOKEN")
+    discord_token = os.getenv("DISCORD_TOKEN")
     description = '''This bot got memes'''# writes description for the bot
 
     # intents setup
@@ -31,9 +32,9 @@ def startBot():
     @bot.command()
     async def ping(ctx):
         '''Checks the latency of the bot, creates it within an embed'''
-        embedVar = discord.Embed(title="Pong", description="Pong", color=0x00ff00)
-        embedVar.add_field(name="Latency", value=str(round(bot.latency * 1000)), inline=False)
-        await ctx.send(embed=embedVar)
+        embed_var = discord.Embed(title="Pong", description="Pong", color=0x00ff00)
+        embed_var.add_field(name="Latency", value=str(round(bot.latency * 1000)), inline=False)
+        await ctx.send(embed=embed_var)
 
     @bot.command()
     async def test(ctx, arg):
@@ -80,4 +81,4 @@ def startBot():
             await ctx.send("Please tag a member! [prefix]joined @(member)")
             
     
-    bot.run(TOKEN)
+    bot.run(discord_token)
