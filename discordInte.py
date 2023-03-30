@@ -45,26 +45,26 @@ def startBot():
         """Adds two numbers together."""
         await ctx.send(left + right)
 
-    @add.error
+    # @add.error
     async def add_error(ctx, error):
         '''Relays bad argument error'''
-        if isinstance(error, commands.BadArgument):
+        if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please give me two numbers! [prefix]add (num1) (num2)")
     
     @bot.command()
     async def mcount(ctx):
         '''Retrieves the count of members'''
-        await ctx.send(f"{discord.Member.guild.name} has {discord.Guild.member_count}")
+        await ctx.send(f"This server has {bot.get_guild()}")
 
     @bot.command()
     async def stfu(ctx, member: discord.Member):
         '''tells someone to stfu'''
         await ctx.send(f"{member.name} STFU :eggmike:")
     
-    @stfu.error
+    # @stfu.error
     async def stfu_error(ctx, error):
         '''Relays bad argument error'''
-        if isinstance(error, commands.BadArgument):
+        if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please tag a member! [prefix]joined @(member)")
 
     @bot.command()
@@ -76,7 +76,7 @@ def startBot():
     @joined.error
     async def joined_error(ctx, error):
         '''Relays bad argument error'''
-        if isinstance(error, commands.BadArgument):
+        if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please tag a member! [prefix]joined @(member)")
             
     
