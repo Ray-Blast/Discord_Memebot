@@ -2,8 +2,10 @@
 import os
 import discord
 import requests
+import meme_inte as mi
 from dotenv import load_dotenv
 from discord.ext import commands
+from discord import app_commands
 
 load_dotenv()#loads files from a .dotenv
 
@@ -29,7 +31,23 @@ def startBot():
     async def on_ready():
         '''Startup event, says that the bot is now running'''
         print(f"{bot.user} is now running!")
+        try:
+            synced = await bot.tree.sync()
+            print(f"Synced {len(synced)} command(s)")
+        except Exception as e:
+            print(e)
     
+    @bot.tree.command(name="hello")
+    async def hello(interaction: discord.Interaction):
+        '''Slash command for saying hi!'''
+        await interaction.response.send_message(f"Hi {interaction.user.mention}!", ephemeral=True)
+
+    @bot.tree.command(name="repeat")
+    @app_commands.describe(phrase = "What you want me to repeat?")
+    async def repeat(interaction: discord.Interaction, phrase: str):
+        '''Slash Command for repeating a phrase'''
+        await interaction.response.send_message(f"{interaction.user.name} said: '{phrase}'")
+
     @bot.command(name="ping")
     async def ping(ctx):
         '''Checks the latency of the bot, creates it within an embed'''
@@ -80,11 +98,11 @@ def startBot():
         '''Relays bad argument error'''
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please tag a member! [prefix]joined @(member)")
-            
-    @bot.command()
+      
+    # Command that gets a meme and posts it
+    @bot.command(name="meme")
     async def meme(ctx):
-        meme_url = "https://twitter.com/i/status/1641422683924512769"
-        response = requests.get(meme_url)
+        response = mi.getMeme()
         if response.status_code == 200:
             with open('meme.jpg', 'wb') as f:
                 f.write(response.content)
