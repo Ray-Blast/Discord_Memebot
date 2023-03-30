@@ -29,40 +29,40 @@ def startBot():
         '''Startup event, says that the bot is now running'''
         print(f"{bot.user} is now running!")
     
-    @bot.command()
+    @bot.command(name="ping")
     async def ping(ctx):
         '''Checks the latency of the bot, creates it within an embed'''
         embed_var = discord.Embed(title="Pong", description="Pong", color=0x00ff00)
         embed_var.add_field(name="Latency", value=str(round(bot.latency * 1000)), inline=False)
         await ctx.send(embed=embed_var)
 
-    @bot.command()
+    @bot.command(name="test")
     async def test(ctx, arg):
         '''Test command, repeats what you said. Use Quotes for literals'''
         await ctx.send(arg)
     
-    @bot.command()
+    @bot.command(name="add")
     async def add(ctx, left: int, right: int):
         """Adds two numbers together."""
         await ctx.send(left + right)
 
-    # @add.error
+    @add.error
     async def add_error(ctx, error):
         '''Relays bad argument error'''
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please give me two numbers! [prefix]add (num1) (num2)")
     
-    @bot.command()
+    @bot.command(name="mcount")
     async def mcount(ctx):
         '''Retrieves the count of members'''
-        await ctx.send(f"This server has {bot.get_guild()}")
+        await ctx.send(f"This server has {ctx.guild.member_count} total members!")
 
-    @bot.command()
+    @bot.command(name="stfu")
     async def stfu(ctx, member: discord.Member):
         '''tells someone to stfu'''
-        await ctx.send(f"{member.name} STFU :eggmike:")
+        await ctx.send(f"<@{member.id}> STFU :eggmike:")
     
-    # @stfu.error
+    @stfu.error
     async def stfu_error(ctx, error):
         '''Relays bad argument error'''
         if isinstance(error, commands.MissingRequiredArgument):
