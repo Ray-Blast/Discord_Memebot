@@ -1,6 +1,7 @@
 '''This module handles all the discord integration side of the bot'''
 import os
 import discord
+import requests
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -80,5 +81,15 @@ def startBot():
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please tag a member! [prefix]joined @(member)")
             
-    
+    @bot.command()
+    async def meme(ctx):
+        meme_url = "https://twitter.com/i/status/1641422683924512769"
+        response = requests.get(meme_url)
+        if response.status_code == 200:
+            with open('meme.jpg', 'wb') as f:
+                f.write(response.content)
+            with open('meme.jpg', 'rb') as f:
+                await ctx.channel.send(file=discord.File(f, 'meme.jpg'))
+        else:
+            await ctx.channel.send('Failed to fetch meme :(')
     bot.run(discord_token)
