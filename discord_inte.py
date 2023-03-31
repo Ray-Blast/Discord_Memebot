@@ -54,16 +54,12 @@ def startBot():
         embed_var = discord.Embed(title="Pong", description="Pong", color=0x00ff00)
         embed_var.add_field(name="Latency", value=str(round(bot.latency * 1000)), inline=False)
         await ctx.send(embed=embed_var)
-
-    @bot.command(name="test")
-    async def test(ctx, arg):
-        '''Test command, repeats what you said. Use Quotes for literals'''
-        await ctx.send(arg)
     
-    @bot.command(name="add")
-    async def add(ctx, left: int, right: int):
+    @bot.tree.command(name="add")
+    @app_commands.describe(left = 'First Num', right = 'Second Number')
+    async def add(interaction: discord.Interaction, left: int, right: int):
         """Adds two numbers together."""
-        await ctx.send(left + right)
+        await interaction.response.send_message(left + right)
 
     @add.error
     async def add_error(ctx, error):
@@ -71,10 +67,10 @@ def startBot():
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please give me two numbers! [prefix]add (num1) (num2)")
     
-    @bot.command(name="mcount")
-    async def mcount(ctx):
+    @bot.tree.command(name="mcount")
+    async def mcount(interaction: discord.Interaction):
         '''Retrieves the count of members'''
-        await ctx.send(f"This server has {ctx.guild.member_count} total members!")
+        await interaction.response.send_message(f"This server has {interaction.guild.member_count} total members!")
 
     @bot.command(name="stfu")
     async def stfu(ctx, member: discord.Member):
