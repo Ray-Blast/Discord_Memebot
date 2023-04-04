@@ -15,7 +15,7 @@ refresh_token = os.getenv("IMGUR_REFRESH_TOKEN")
 im_client = ImgurClient(client_id, client_secret, access_token, refresh_token)
 
 #authorization (not on rn)
-authorization_url = im_client.get_auth_url()
+#authorization_url = im_client.get_auth_url()
 
 memes = im_client.memes_subgallery()
 for item in memes:
