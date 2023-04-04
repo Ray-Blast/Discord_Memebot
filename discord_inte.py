@@ -95,15 +95,22 @@ def startBot():
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Please tag a member! [prefix]joined @(member)")
       
-    # Command that gets a meme and posts it
-    @bot.command(name="meme")
-    async def meme(ctx):
+    @bot.tree.command(name="meme")
+    async def meme(interaction: discord.Interaction):
+        '''Sends memes and HaHas'''
         response = mi.getMeme()
-        if response.status_code == 200:
-            with open('meme.jpg', 'wb') as f:
-                f.write(response.content)
-            with open('meme.jpg', 'rb') as f:
-                await ctx.channel.send(file=discord.File(f, 'meme.jpg'))
-        else:
-            await ctx.channel.send('Failed to fetch meme :(')
+        await interaction.response.send_message(response)
+
+    # Command that gets a meme and posts it
+    # @bot.command(name="meme")
+    # async def meme(ctx):
+    #     response = mi.getMeme()
+    #     # if response.status_code == 200:
+    #     #     with open('meme.jpg', 'wb') as f:
+    #     #         f.write(response.content)
+    #     #     with open('meme.jpg', 'rb') as f:
+    #     #         await ctx.channel.send(file=discord.File(f, 'meme.jpg'))
+    #     # else:
+    #     #     await ctx.channel.send('Failed to fetch meme :(')
+    #     await ctx.channel.send(response)
     bot.run(discord_token)
