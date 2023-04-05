@@ -1,4 +1,4 @@
-# Discord_Memebot
----
+# Discord Meme Bot
 
-This bot is a small project where all we do is get memes from the web and paste it to our discord
+This is a simple bot that interacts with the Discord API and Imgur API to provide high quality memes and utilities
+
