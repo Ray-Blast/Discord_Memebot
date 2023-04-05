@@ -60,40 +60,23 @@ def startBot():
     async def add(interaction: discord.Interaction, left: int, right: int):
         """Adds two numbers together."""
         await interaction.response.send_message(left + right)
-
-    @add.error
-    async def add_error(ctx, error):
-        '''Relays bad argument error'''
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Please give me two numbers! [prefix]add (num1) (num2)")
     
     @bot.tree.command(name="mcount")
     async def mcount(interaction: discord.Interaction):
         '''Retrieves the count of members'''
         await interaction.response.send_message(f"This server has {interaction.guild.member_count} total members!")
 
-    @bot.command(name="stfu")
-    async def stfu(ctx, member: discord.Member):
+    @bot.tree.command(name="stfu")
+    @app_commands.describe(member="The member you want to ping")
+    async def stfu(interaction: discord.Interaction, member: discord.Member):
         '''tells someone to stfu'''
-        await ctx.send(f"<@{member.id}> STFU :eggmike:")
-    
-    @stfu.error
-    async def stfu_error(ctx, error):
-        '''Relays bad argument error'''
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Please tag a member! [prefix]joined @(member)")
+        await interaction.response.send_message(f"<@{member.id}> STFU :eggmike:")
 
-    @bot.command()
-    async def joined(ctx, member: discord.Member):
+    @bot.tree.command(name="joined")
+    @app_commands.describe(member="The member you wanna ping")
+    async def joined(interaction: discord.Interaction, member: discord.Member):
         """Says when the member joined, and some more info"""
-        await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
-    
-    #checks for bad arguments
-    @joined.error
-    async def joined_error(ctx, error):
-        '''Relays bad argument error'''
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Please tag a member! [prefix]joined @(member)")
+        await interaction.response.send_message(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
       
     @bot.tree.command(name="meme")
     async def meme(interaction: discord.Interaction):
@@ -101,16 +84,4 @@ def startBot():
         response = mi.getMeme()
         await interaction.response.send_message(response)
 
-    # Command that gets a meme and posts it
-    # @bot.command(name="meme")
-    # async def meme(ctx):
-    #     response = mi.getMeme()
-    #     # if response.status_code == 200:
-    #     #     with open('meme.jpg', 'wb') as f:
-    #     #         f.write(response.content)
-    #     #     with open('meme.jpg', 'rb') as f:
-    #     #         await ctx.channel.send(file=discord.File(f, 'meme.jpg'))
-    #     # else:
-    #     #     await ctx.channel.send('Failed to fetch meme :(')
-    #     await ctx.channel.send(response)
     bot.run(discord_token)
