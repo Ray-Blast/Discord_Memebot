@@ -1,6 +1,6 @@
-import requests
-import random
+'''This file holds the logic and integration with the imgur API'''
 import os
+import random
 from imgurpython import ImgurClient
 from dotenv import load_dotenv
 
@@ -14,10 +14,9 @@ refresh_token = os.getenv("IMGUR_REFRESH_TOKEN")
 #sets the client using the IDs
 im_client = ImgurClient(client_id, client_secret, access_token, refresh_token)
 
-def getMeme():
+def get_meme():
     '''Grabs a meme that is hosted on Imgur'''
     # grabs a gallery of memes and stores
     meme_list = im_client.memes_subgallery()
-    randomMeme = random.choice(meme_list)
-    return randomMeme.link
-
+    random_meme = random.choice(meme_list)
+    return random_meme.link

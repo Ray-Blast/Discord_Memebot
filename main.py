@@ -3,4 +3,4 @@
 import discord_inte as di
 if __name__ == '__main__':
 
-    di.startBot()
+    di.start_bot()
