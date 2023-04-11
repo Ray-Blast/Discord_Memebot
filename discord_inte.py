@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord import app_commands
 import meme_inte as mi
+import pixiv_inte as pi
 
 
 load_dotenv()#loads files from a .dotenv
