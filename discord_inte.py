@@ -37,7 +37,7 @@ def start_bot():
             print(f"Synced {len(synced)} command(s)")
         except Exception as excep:
             print(excep)
-
+            
     @bot.tree.command(name="hello")
     async def hello(interaction: discord.Interaction):
         '''Slash command for saying hi!'''
