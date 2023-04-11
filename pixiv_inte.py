@@ -14,7 +14,7 @@ translator = deepl.Translator(deepl_key)
 api = AppPixivAPI()
 api.auth(refresh_token=pixiv_refresh_token)
 
-def getFile(tag:str):
+def getFile(tag:str, search_type: str):
     '''Function that downloads and returns the path of an image form pixiv'''
     workingDirectory = os.listdir(f"{os.getcwd()}\my_pixiv_images")
                                   
@@ -24,11 +24,13 @@ def getFile(tag:str):
         for file in workingDirectory:
             os.remove(f"{os.getcwd()}\my_pixiv_images\{file}")
 
-    match tag:
+    match search_type:
         case "recommend":
             json_result = searchRecommended()
-        case _:
+        case "tag":
             json_result = searchForFile(tag)
+        case "related":
+            json_result = search_related(tag)
             
     randomImg = random.randint(0, len(json_result)-1)
     illust = json_result.illusts[randomImg]
@@ -47,4 +49,8 @@ def searchForFile(imgTag: str):
 
 def searchRecommended():
     results = api.illust_recommended()
+    return results
+
+def search_related(tag):
+    results = api.illust_related(tag)
     return results

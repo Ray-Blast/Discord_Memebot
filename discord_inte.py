@@ -88,7 +88,7 @@ def start_bot():
     @app_commands.describe(tag_for_image="This is the tag that you want to find!")
     async def search_pixiv(interaction: discord.Interaction, tag_for_image: str):
         '''This will search pixiv and return a picture that comes with your tag!'''
-        file = pix.getFile(tag_for_image)
+        file = pix.getFile(tag_for_image, "tag")
 
         with open(f"my_pixiv_images\{file}", 'rb') as f:
             image = discord.File(f)
@@ -96,11 +96,20 @@ def start_bot():
     
     @bot.tree.command(name="pixiv_recommend")
     async def pixiv_recommend(interaction: discord.Interaction):
-        file = pix.getFile("recommend")
+        '''Retrieves a random image based upon the user's recommendation tab!'''
+        file = pix.getFile("none", "recommend")
 
         with open(f"my_pixiv_images\{file}", 'rb') as f:
             image = discord.File(f)
         await interaction.response.send_message(file=image)
 
+    @bot.tree.command(name="pixiv_related")
+    async def pixiv_related(interaction: discord.Interaction, image_id: int):
+        '''retrieves an image based upon a related image'''
+        file = pix.getFile(image_id, "related")
+        
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
 
     bot.run(discord_token)
