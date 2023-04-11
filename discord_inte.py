@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord import app_commands
 import meme_inte as mi
 import pixiv_inte as pix
+import openai_inte as opi
 
 
 load_dotenv()#loads files from a .dotenv
@@ -112,5 +113,11 @@ def start_bot():
         with open(f"my_pixiv_images\{file}", 'rb') as f:
             image = discord.File(f)
         await interaction.response.send_message(file=image)
+
+    @bot.tree.command(name="question")
+    async def question(interaction: discord.Interaction, question: str):
+        '''Ask me a question! I'll try to answer it'''
+        answer = opi.generate_response(question)
+        await interaction.response.send_message(answer)
 
     bot.run(discord_token)
