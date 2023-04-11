@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord import app_commands
 import meme_inte as mi
+import pixiv_inte as pix
+import openai_inte as opi
 
 
 load_dotenv()#loads files from a .dotenv
@@ -35,7 +37,7 @@ def start_bot():
             print(f"Synced {len(synced)} command(s)")
         except Exception as excep:
             print(excep)
-
+            
     @bot.tree.command(name="hello")
     async def hello(interaction: discord.Interaction):
         '''Slash command for saying hi!'''
@@ -79,8 +81,43 @@ def start_bot():
 
     @bot.tree.command(name="meme")
     async def meme(interaction: discord.Interaction):
-        '''Sends memes and HaHas'''
+        '''Sends a meme from imgur'''
         response = mi.get_meme()
         await interaction.response.send_message(response)
+    
+    @bot.tree.command(name="search_pixiv")
+    @app_commands.describe(tag_for_image="This is the tag that you want to find!")
+    async def search_pixiv(interaction: discord.Interaction, tag_for_image: str):
+        '''This will search pixiv and return a picture that comes with your tag!'''
+        file = pix.getFile(tag_for_image, "tag")
+
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
+    
+    @bot.tree.command(name="pixiv_recommend")
+    async def pixiv_recommend(interaction: discord.Interaction):
+        '''Retrieves a random image based upon the user's recommendation tab!'''
+        file = pix.getFile("none", "recommend")
+
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
+
+    @bot.tree.command(name="pixiv_related")
+    @app_commands.describe(image_id="The ID of the image that you want to see the related of!")
+    async def pixiv_related(interaction: discord.Interaction, image_id: int):
+        '''retrieves an image based upon a related image'''
+        file = pix.getFile(image_id, "related")
+        
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
+
+    @bot.tree.command(name="question")
+    async def question(interaction: discord.Interaction, question: str):
+        '''Ask me a question! I'll try to answer it'''
+        answer = opi.generate_response(question)
+        await interaction.response.send_message(answer)
 
     bot.run(discord_token)
