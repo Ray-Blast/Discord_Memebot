@@ -6,7 +6,6 @@ temperature = 0
 max_tokens = 1024
 
 def generate_response(prompt):
-
     response = openai.Completion.create(
         engine='text-davinci-003',
         prompt=f'Q: {prompt}\nA:',
