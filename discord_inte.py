@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord import app_commands
 import meme_inte as mi
-import pixiv_inte as pi
+import pixiv_inte as pix
 
 
 load_dotenv()#loads files from a .dotenv
@@ -80,8 +80,17 @@ def start_bot():
 
     @bot.tree.command(name="meme")
     async def meme(interaction: discord.Interaction):
-        '''Sends memes and HaHas'''
+        '''Sends a meme from imgur'''
         response = mi.get_meme()
         await interaction.response.send_message(response)
+    
+    @bot.tree.command(name="pixiv")
+    async def pixiv(interaction: discord.Interaction):
+        '''Sends a random image from pixiv'''
+        file = pix.getImage()
+
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
 
     bot.run(discord_token)
