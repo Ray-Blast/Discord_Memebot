@@ -84,14 +84,23 @@ def start_bot():
         response = mi.get_meme()
         await interaction.response.send_message(response)
     
-    @bot.tree.command(name="pixiv")
+    @bot.tree.command(name="search_pixiv")
     @app_commands.describe(tag_for_image="This is the tag that you want to find!")
-    async def pixiv(interaction: discord.Interaction, tag_for_image: str):
-        '''Sends a random image from pixiv'''
+    async def search_pixiv(interaction: discord.Interaction, tag_for_image: str):
+        '''This will search pixiv and return a picture that comes with your tag!'''
         file = pix.getFile(tag_for_image)
 
         with open(f"my_pixiv_images\{file}", 'rb') as f:
             image = discord.File(f)
         await interaction.response.send_message(file=image)
+    
+    @bot.tree.command(name="pixiv_recommend")
+    async def pixiv_recommend(interaction: discord.Interaction):
+        file = pix.getFile("recommend")
+
+        with open(f"my_pixiv_images\{file}", 'rb') as f:
+            image = discord.File(f)
+        await interaction.response.send_message(file=image)
+
 
     bot.run(discord_token)
