@@ -14,6 +14,15 @@ api.auth(refresh_token=pixiv_refresh_token)
 # client.authenticate("FzfBuNw4oS2lzyAg_SknPIKNlFfaydcpK3H__W60bLw")
 
 def getImage():
+    workingDirectory = os.listdir(f"{os.getcwd()}\my_pixiv_images")
+                                  
+    if workingDirectory == []:
+        print("No files found in the directory.")
+    else:
+        for file in workingDirectory:
+            os.remove(f"{os.getcwd()}\my_pixiv_images\{file}")
+
+
     json_result = api.illust_ranking()
     for illust in json_result.illusts[:1]:
         api.download(illust.image_urls.large, path=f"{os.getcwd()}\my_pixiv_images")
