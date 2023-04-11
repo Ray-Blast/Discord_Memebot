@@ -5,7 +5,6 @@ from pathlib import Path
 from pixivpy3 import *
 from dotenv import load_dotenv
 
-
 load_dotenv()
 pixiv_refresh_token = os.getenv("PIXIV_REFRESH_TOKEN")
 
@@ -23,11 +22,8 @@ def getImage():
             os.remove(f"{os.getcwd()}\my_pixiv_images\{file}")
 
 
-    json_result = api.illust_ranking()
+    json_result = api.illust_recommended()
     for illust in json_result.illusts[:1]:
         api.download(illust.image_urls.large, path=f"{os.getcwd()}\my_pixiv_images")
     files = os.listdir(f"{os.getcwd()}\my_pixiv_images")
     return files[0]
-    
-    
-print(getImage())
