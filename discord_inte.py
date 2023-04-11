@@ -104,6 +104,7 @@ def start_bot():
         await interaction.response.send_message(file=image)
 
     @bot.tree.command(name="pixiv_related")
+    @app_commands.describe(image_id="The ID of the image that you want to see the related of!")
     async def pixiv_related(interaction: discord.Interaction, image_id: int):
         '''retrieves an image based upon a related image'''
         file = pix.getFile(image_id, "related")
