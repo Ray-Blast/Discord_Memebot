@@ -117,7 +117,7 @@ def start_bot():
     @bot.tree.command(name="question")
     async def question(interaction: discord.Interaction, question: str):
         '''Ask me a question! I'll try to answer it'''
-        answer = opi.generate_response(question)
+        answer = opi.answer_question(question)
         await interaction.response.send_message(answer)
 
     bot.run(discord_token)
